@@ -258,7 +258,7 @@ var ImaiTreeLayouter = (function () {
 
           vertices[u] = {
             x: x[u],
-            y: layers[u] * (vertexHeight / 2 + layerMargin) + vertexHeight / 2,
+            y: (layers[u] + 1) * (vertexHeight + layerMargin),
             width: vertexWidth,
             height: vertexHeight
           };
@@ -295,8 +295,9 @@ var ImaiTreeLayouter = (function () {
             for (var _iterator7 = gOrig.outVertices(u)[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
               var v = _step7.value;
 
+              var points = layers[v] - layers[u] > 1 ? [[vertices[u].x, vertices[u].y + vertices[u].height / 2], [vertices[v].x, vertices[u].y + vertices[u].height + layerMargin], [vertices[v].x, vertices[v].y - vertices[v].height / 2]] : [[vertices[u].x, vertices[u].y + vertices[u].height / 2], [vertices[v].x, vertices[v].y - vertices[v].height / 2]];
               edges[u][v] = {
-                points: [[vertices[u].x, vertices[u].y + vertices[u].height / 2], [vertices[v].x, vertices[u].y + vertexHeight + layerMargin], [vertices[v].x, vertices[v].y - vertices[v].height / 2]],
+                points: points,
                 width: edgeWidth
               };
             }

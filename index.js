@@ -127,7 +127,7 @@ class ImaiTreeLayouter {
     for (const u of gOrig.vertices()) {
       vertices[u] = {
         x: x[u],
-        y: layers[u] * (vertexHeight / 2 + layerMargin) + vertexHeight / 2,
+        y: (layers[u] + 1) * (vertexHeight + layerMargin),
         width: vertexWidth,
         height: vertexHeight
       };
@@ -135,12 +135,18 @@ class ImaiTreeLayouter {
     for (const u of gOrig.vertices()) {
       edges[u] = {};
       for (const v of gOrig.outVertices(u)) {
+        const points = layers[v] - layers[u] > 1
+          ? [
+              [vertices[u].x, vertices[u].y + vertices[u].height / 2],
+              [vertices[v].x, vertices[u].y + vertices[u].height + layerMargin],
+              [vertices[v].x, vertices[v].y - vertices[v].height / 2]
+            ]
+          : [
+              [vertices[u].x, vertices[u].y + vertices[u].height / 2],
+              [vertices[v].x, vertices[v].y - vertices[v].height / 2]
+            ];
         edges[u][v] = {
-          points: [
-            [vertices[u].x, vertices[u].y + vertices[u].height / 2],
-            [vertices[v].x, vertices[u].y + vertexHeight + layerMargin],
-            [vertices[v].x, vertices[v].y - vertices[v].height / 2]
-          ],
+          points: points,
           width: edgeWidth
         };
       }
